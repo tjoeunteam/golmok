@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+<jsp:include page="<%=request.getContextPath() %>/home/menu.jsp"></jsp:include>
 <b>안녕하세요</b>
 </body>
 </html>

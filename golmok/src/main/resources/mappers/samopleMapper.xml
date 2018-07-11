@@ -4,6 +4,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- 다른 mapper와 중복되지 않도록 네임스페이스 기재 -->
-<mapper namespace="sample">
+<mapper namespace="user">
+
+  <insert id="joinUser">
+    INSERT INTO USER_TABLE(USER_EMAIL, USER_PW, USER_NAME, USER_VERIFYCODE, USER_JOINDATE, USER_ISUSER) 
+    VALUES (#{user_email}, #{user_pw}, #{user_name}, #{user_verifyCode}, sysdate, #{user_isUser})
+  </insert>
    
 </mapper>
