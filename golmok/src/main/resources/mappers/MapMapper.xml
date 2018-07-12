@@ -7,7 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="map">
 
 	<select id="select_1type" resultType="golmok.team.vo.MapVO">
-	SELECT STORE_1TYPE_NAME FROM STORE_1TYPE_TABLE
+	SELECT * FROM STORE_1TYPE_TABLE
 </select>
    
 </mapper>
