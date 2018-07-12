@@ -9,6 +9,8 @@ public class Map_TestCon {
 	@RequestMapping("/Map_Test")
 	public String main_chat() {
 		
-		return "jsp/chat";
+		return "MapTest/Map";
 	}
+	
+	
 }
