@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="kor">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +12,7 @@
     <div>
     <select id="1type_select" name="1type_select" ><option>1차 업종 분류</option></select>    
     <select id="2type_select" name="2type_select"><option>2차 업종 분류</option></select>    
-    <select id="3type_select" name="3type_select"><option>3차 업종 분류</option></select>            
+    <select id="3type_select" name="3type_select"><option>3차 업종 분류</option></select>       
     </div>
 <script>
     window.onload(ItemOnLoad());
