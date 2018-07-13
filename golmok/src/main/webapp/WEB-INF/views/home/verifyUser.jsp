@@ -47,7 +47,7 @@
             <input type="text" class="form-control" id="verify_Info" name="login_Email" id="login_Email">
           </div>
           <div class="form-group">
-            <label for="message-text" class="control-label" id="verifyLabel">이름</label>
+            <label for="message-text" class="control-label" id="verifyLabel">성함</label>
             <input type="text" class="form-control" id="verify_Info" name="login_PW" id="login_PW">
           </div>
       </form>
