@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="user">
+  <resultMap id="user" type="golmok.team.vo.UserVo">
+    <result property="user_email"  column="USER_EMAIL" />
+    <result property="user_pw"  column="USER_PW" />
+    <result property="user_name"  column="USER_NAME" />
+    <result property="user_verifyCode" column="USER_VERIFYCODE" />
+    <result property="user_joinDate"  column="USER_ISUSER" />    
+  </resultMap>
+
+  <insert id="joinUser">
+    INSERT INTO USER_TABLE(USER_EMAIL, USER_PW, USER_NAME, USER_VERIFYCODE, USER_JOINDATE, USER_ISUSER) 
+    VALUES (#{user_email}, MD5(#{user_pw}), #{user_name}, MD5(#{user_verifyCode}), sysdate(), #{user_isUser}) 
+  </insert>
+  
+  <select id="selectByEmail" parameterType="golmok.team.vo.UserVo" resultType="golmok.team.vo.UserVo">
+    SELECT * FROM USER_TABLE WHERE USER_EMAIL = #{user_email}
+  </select>
+  
+  <update id="updateInfobyVerifyCode">
+    UPDATE USER_TABLE SET USER_ISUSER = 'T', USER_VERIFYCODE = '' WHERE USER_EMAIL = #{user_email} AND USER_VERIFYCODE = #{user_verifyCode}
+  </update>
+  
+  <select id="selectByEmailAndPW" parameterType="golmok.team.vo.UserVo" resultType="golmok.team.vo.UserVo">
+    SELECT * FROM USER_TABLE WHERE USER_EMAIL = #{user_email} AND USER_PW = MD5(#{user_pw})
+  </select>
+   
+</mapper> 
