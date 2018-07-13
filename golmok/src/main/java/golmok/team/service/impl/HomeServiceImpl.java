@@ -19,7 +19,26 @@ public class HomeServiceImpl implements HomeService {
 		
 		int result = homeDao.joinUser(uVo);
 		
-		return 0;
+		return result;
+	}
+
+	@Override
+	public UserVo selectByEmail(UserVo uVo) {
+		UserVo resultVo = homeDao.selectByEmail(uVo);
+		
+		return resultVo;
+	}
+
+	@Override
+	public int updateInfobyVerifyCode(UserVo uVo) {
+		int result = homeDao.updateInfobyVerifyCode(uVo);
+		return result;
+	}
+
+	@Override
+	public UserVo selectByEmailAndPW(UserVo uVo) {
+		UserVo resultVo = homeDao.selectByEmailAndPW(uVo);
+		return resultVo;
 	}
 	
 }

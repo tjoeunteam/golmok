@@ -1,16 +1,18 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%
-  String joinAlertStr = (String)request.getAttribute("joinAlertStr");
+  String sessionID = "";
+  sessionID = (String)session.getAttribute("sessionID");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%-- <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/bootstrap/bootstrap.min.css"> --%>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
 <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <style type="text/css">
 #header_cell{
   width:130px;
@@ -18,26 +20,26 @@
 }
 
 #menu_header{
-  font-family:'BM JUA','¹è´ŞÀÇ¹ÎÁ· ÁÖ¾Æ',sans-serif;
+  font-family:'BM JUA','ë°°ë‹¬ì˜ë¯¼ì¡± ì£¼ì•„',sans-serif;
   font-size:1.8em;
 /*   padding-left:2%; */
   /* text-align:center; */
 }
 
 #menu_bars{
-  font-family:'BM JUA','¹è´ŞÀÇ¹ÎÁ· ÁÖ¾Æ',sans-serif;
+  font-family:'BM JUA','ë°°ë‹¬ì˜ë¯¼ì¡± ì£¼ì•„',sans-serif;
   font-size:1.4em;  
 }
 
 #login_bars{
-  font-family:'BM JUA','¹è´ŞÀÇ¹ÎÁ· ÁÖ¾Æ',sans-serif;
+  font-family:'BM JUA','ë°°ë‹¬ì˜ë¯¼ì¡± ì£¼ì•„',sans-serif;
   font-size:1.4em; 
-  padding-left:50%;
+  padding-left:45%;
 }
 
 #loginModal_size{
   width:500px;
-  font-family:'BM JUA','¹è´ŞÀÇ¹ÎÁ· ÁÖ¾Æ',sans-serif;
+  font-family:'BM JUA','ë°°ë‹¬ì˜ë¯¼ì¡± ì£¼ì•„',sans-serif;
   font-size:1.1em;
 }
 
@@ -67,24 +69,53 @@
 .birthDay{
   height:25px;
 }
+
+body{
+  font-family:'BM JUA','ë°°ë‹¬ì˜ë¯¼ì¡± ì£¼ì•„',sans-serif;
+}
 </style>
-<title>¸Ş´ºÃ¢</title>
+<title>ë©”ë‰´ì°½</title>
 </head>
 <body>
   <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
       <div class="navbar-header" id="header_cell">
-        <a class="navbar-brand" id="menu_header" href="<%=request.getContextPath()%>/home/homepage.do">°ñ¸ñ´ëÀå</a>
+        <a class="navbar-brand" id="menu_header" href="<%=request.getContextPath()%>/home/homepage.do">ê³¨ëª©ëŒ€ì¥</a>
       </div>
       <div id="navbar" class="collapse navbar-collapse"> 
-        <ul class="nav navbar-nav" id="menu_bars">
-          <li><a href="#">È¸»ç¼Ò°³</a></li>
-          <li><a href="#">»ó±ÇºĞ¼®</a></li>
+        <ul class="nav navbar-nav" id="menu_bars">          
+          <%
+            if(sessionID != null && !sessionID.equals("")){
+          %>
+          <li><a href="#">íšŒì‚¬ì†Œê°œ</a></li>
+          <li><a href="#">ìƒê¶Œë¶„ì„</a></li>
           <li><a href="#">Q&A</a></li>
+          <%
+            }else{
+          %>
+          <li><a href="javascript:notPermitAccess();">íšŒì‚¬ì†Œê°œ</a></li>
+          <li><a href="javascript:notPermitAccess();">ìƒê¶Œë¶„ì„</a></li>
+          <li><a href="javascript:notPermitAccess();">Q&A</a></li>
+          <%
+          
+            }
+          %>
         </ul> 
         <ul class="nav navbar-nav" id="login_bars">
-          <li><a href="#" data-toggle="modal" data-target="#loginModal">·Î±×ÀÎ</a></li>
-          <li><a href="#" data-toggle="modal" data-target="#joinModal">È¸¿ø°¡ÀÔ</a></li>
+          <%
+            if(sessionID != null && !sessionID.equals("")){
+          %>
+            <li><a href="#">íšŒì›ì •ë³´ìˆ˜ì •</a></li>
+            <li><a href="<%=request.getContextPath() %>/home/logout.do">ë¡œê·¸ì•„ì›ƒ</a></li>
+          <%
+            }else{
+            	
+          %>
+            <li><a href="#" data-toggle="modal" data-target="#loginModal">ë¡œê·¸ì¸</a></li>
+            <li><a href="#" data-toggle="modal" data-target="#joinModal">íšŒì›ê°€ì…</a></li>
+          <%
+            }
+          %>
         </ul>
       </div> 
     </div>
@@ -94,26 +125,25 @@
       <div class="modal-content" id="loginModal_size">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="exampleModalLabel"><strong>·Î±×ÀÎ</strong></h4>
+          <h4 class="modal-title" id="exampleModalLabel"><strong>ë¡œê·¸ì¸</strong></h4>
         </div>
-        <form>
+        <form name="loginForm" action="loginAction.do" method="POST">
           <div class="modal-body">
             <div class="form-group">
-              <label for="recipient-name" class="control-label">¾ÆÀÌµğ</label>
-              <input type="text" class="form-control" id="login_inputs">
+              <label for="recipient-name" class="control-label">ì•„ì´ë””(ì´ë©”ì¼)</label>
+              <input type="text" class="form-control" id="login_inputs" name="login_Email" id="login_Email">
             </div>
             <div class="form-group">
-              <label for="message-text" class="control-label">ºñ¹Ğ¹øÈ£</label>
-              <input type="text" class="form-control" id="login_inputs">
+              <label for="message-text" class="control-label">ë¹„ë°€ë²ˆí˜¸</label>
+              <input type="text" class="form-control" id="login_inputs" name="login_PW" id="login_PW">
             </div>
           </div>
           <div class="modal-footer">
             <div class="find_ID_PW">
-              <a href="#" >¾ÆÀÌµğÃ£±â</a> |
-              <a href="#" class="find_ID_PW">ºñ¹Ğ¹øÈ£Ã£±â</a>
+              <a href="<%=request.getContextPath() %>/home/findPW.do" >ë¹„ë°€ë²ˆí˜¸ì°¾ê¸°</a>
             </div>
-            <input type="submit" class="btn btn-info" value="·Î±×ÀÎ" />
-            <button type="button" class="btn btn-default" data-dismiss="modal">Ãë¼Ò</button>
+            <input type="submit" id="loginForm_submit" class="btn btn-info" value="ë¡œê·¸ì¸" />
+            <button type="button" class="btn btn-default" data-dismiss="modal">ì·¨ì†Œ</button>
           </div>
         </form>
       </div>
@@ -124,101 +154,192 @@
       <div class="modal-content" id="loginModal_size">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="exampleModalLabel"><strong>È¸¿ø°¡ÀÔ</strong></h4>
+          <h4 class="modal-title" id="exampleModalLabel"><strong>íšŒì›ê°€ì…</strong></h4>
         </div>
          <!-- onsubmit="return checkJoinForm(this)" -->
         <form name="joinForm" action="joinAction.do" method="POST">
           <div class="modal-body">
             <div class="form-group">
-              <label for="recipient-name" class="control-label">ÀÌ¸ŞÀÏ</label>
+              <label for="recipient-name" class="control-label">ì´ë©”ì¼</label>&nbsp;&nbsp;
+              <span><input type="button" class="btn btn-warning btn-sm" id="isDup" value="ì´ë©”ì¼ ì¤‘ë³µê²€ì‚¬"></span>
+              <div>
+                <span id="join_warning">&nbsp;ì´ë©”ì¼ ì¸ì¦ì„ í•´ì•¼ ì‚¬ì´íŠ¸ ì´ìš©ì´ ê°€ëŠ¥í•˜ë‹ˆ ì‚¬ìš©ê°€ëŠ¥í•œ ì´ë©”ì¼ì„ ì…ë ¥í•´ì£¼ì„¸ìš”</span>
+              </div>
               <input type="text" class="form-control join_inputs" name="join_Email" id="join_Email">
             </div>
             <div class="form-group">
-              <label for="message-text" class="control-label">ºñ¹Ğ¹øÈ£</label><span id="join_warning">&nbsp;&nbsp;&nbsp;ºñ¹Ğ¹øÈ£´Â ÇÑ °³ÀÌ»óÀÇ ´ë¼Ò¹®ÀÚ, ¼ıÀÚ, Æ¯¼ö¹®ÀÚ°¡ µé¾î°¡¾ßÇÕ´Ï´Ù.</span>
+              <label for="message-text" class="control-label">ë¹„ë°€ë²ˆí˜¸</label>
+              <span id="join_warning">&nbsp;&nbsp;&nbsp;ë¹„ë°€ë²ˆí˜¸ëŠ” í•œ ê°œì´ìƒì˜ ëŒ€ì†Œë¬¸ì, ìˆ«ì, íŠ¹ìˆ˜ë¬¸ìê°€ ë“¤ì–´ê°€ì•¼í•©ë‹ˆë‹¤.</span>
               <input type="text" class="form-control join_inputs" name="join_PW" id="join_PW">
             </div>
             <div class="form-group">
-              <label for="message-text" class="control-label">ºñ¹Ğ¹øÈ£È®ÀÎ</label>
+              <label for="message-text" class="control-label">ë¹„ë°€ë²ˆí˜¸í™•ì¸</label>
               <input type="text" class="form-control join_inputs" name="join_CheckPW" id="join_CheckPW">
             </div>
             <div class="form-group">
-              <label for="message-text" class="control-label">ÀÌ¸§</label>
+              <label for="message-text" class="control-label">ì´ë¦„</label>
               <input type="text" class="form-control join_inputs" name="join_Name" id="join_Name">
             </div>
           </div>
           <div class="modal-footer">
-            <input type="submit" id="joinForm_submit" class="btn btn-info" value="È¸¿ø°¡ÀÔ" >
-            <input type="reset" class="btn btn-danger" value="ÃÊ±âÈ­" >
+            <input type="hidden" id="DuplicationTest" name="DuplicationTest" />
+            <input type="submit" id="joinForm_submit" class="btn btn-info" value="íšŒì›ê°€ì…" >
+            <input type="button" id="reset_joinForm" class="btn btn-danger" value="ì´ˆê¸°í™”" >
           </div>
         </form>
       </div>
     </div>
   </div>
   <script>
-   $(document).ready(function(){
-	   $('#joinForm_submit').on("click",function(){
-		   checkJoinForm();        
-	    });
-   });
+  $('#joinForm_submit').on('click', function(){
+	  checkJoinForm()
+  });
+  
+  $('#loginForm_submit').on('click', function(){
+	 checkloginForm() 
+  });
+  
+  $('#reset_joinForm').on('click', function(){
+	  resetJoinForm()
+  });
+  
+   function notPermitAccess(){
+	   alert('ë¡œê·¸ì¸ì„ í•˜ì…”ì•¼ ì´ìš©ê°€ëŠ¥í•©ë‹ˆë‹¤.');
+   }
+  
+   function resetJoinForm(){
+	   $("#join_Email").val('');
+	   $("#join_PW").val('');
+	   $("#join_CheckPW").val('');
+	   $("#join_Name").val('');
+	   $("#DuplicationTest").val('');
+	   $('#join_Email').attr("readonly", false);
+	   event.preventDefault();
+   }
     
    function checkJoinForm(){ 
     	var email = $("#join_Email").val();
     	var pw = $("#join_PW").val();
     	var checkPW = $("#join_CheckPW").val();
     	var name = $("#join_Name").val();
+    	var DuplicationTest = $("#DuplicationTest").val();
     	
-    	//ÀÌ¸ŞÀÏ Á¤±Ô½Ä
+    	//ì´ë©”ì¼ ì •ê·œì‹
     	var emaliRegExp = /^[0-9a-zA-Z][0-9a-zA-Z\_\-\.\+]+[0-9a-zA-Z]@[0-9a-zA-Z][0-9a-zA-Z\_\-]*[0-9a-zA-Z](\.[a-zA-Z]{2,6}){1,2}$/i;
-    	//ºñ¹Ğ¹øÈ£ Á¤±Ô½Ä : #?!@$%^&*- ¸¸ Çã¿ë
+    	//ë¹„ë°€ë²ˆí˜¸ ì •ê·œì‹ : #?!@$%^&*- ë§Œ í—ˆìš©
     	var pwRegExp = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
     	
     	if(email == "" || email == null){
-    		alert("ÀÌ¸ŞÀÏÀ» ²À ÀÔ·ÂÇØÁÖ¼¼¿ä");
+    		alert("ì´ë©”ì¼ì„ ê¼­ ì…ë ¥í•´ì£¼ì„¸ìš”");
     		$('#join_Email').focus();
     		event.preventDefault();
     	}else if(email.match(emaliRegExp) == null){
-    		alert("ÀÌ¸ŞÀÏ Çü½ÄÀ» ¸ÂÃçÁÖ¼¼¿ä");
+    		alert("ì´ë©”ì¼ í˜•ì‹ì„ ë§ì¶°ì£¼ì„¸ìš”");
     		$('#join_Email').val('');
     		$('#join_Email').focus();
     		event.preventDefault();
     	}else if(pw == "" || pw == null){
-    		alert("ºñ¹Ğ¹øÈ£¸¦ ²À ÀÔ·ÂÇØÁÖ¼¼¿ä");
+    		alert("ë¹„ë°€ë²ˆí˜¸ë¥¼ ê¼­ ì…ë ¥í•´ì£¼ì„¸ìš”");
     		$('#join_PW').focus();
     		event.preventDefault();
     	}else if((pw.length < 8) && (pw.length > 20)){
-    		alert("ºñ¹Ğ¹øÈ£´Â 8ÀÚ¸® ÀÌ»ó 20 ÀÚ¸® ÀÌÇÏ¸¸ °¡´ÉÇÕ´Ï´Ù.");
+    		alert("ë¹„ë°€ë²ˆí˜¸ëŠ” 8ìë¦¬ ì´ìƒ 20 ìë¦¬ ì´í•˜ë§Œ ê°€ëŠ¥í•©ë‹ˆë‹¤.");
     		$('#join_PW').focus();
     		event.preventDefault();
     	}else if(!pw.match(pwRegExp)){
-    		alert("ºñ¹Ğ¹øÈ£´Â ¿µ¹®(´ë¼Ò¹®ÀÚ °¢°¢ 1°³ ÇÊ¼ö),¼ıÀÚ,Æ¯¼ö¹®ÀÚ(#?!@$%^&*- ¸¸ Çã¿ë)¸¦ È¥¿ëÇÏ¿© ÀÔ·ÂÇØÁÖ¼¼¿ä");
+    		alert("ë¹„ë°€ë²ˆí˜¸ëŠ” ì˜ë¬¸(ëŒ€ì†Œë¬¸ì ê°ê° 1ê°œ í•„ìˆ˜),ìˆ«ì,íŠ¹ìˆ˜ë¬¸ì(#?!@$%^&*- ë§Œ í—ˆìš©)ë¥¼ í˜¼ìš©í•˜ì—¬ ì…ë ¥í•´ì£¼ì„¸ìš”");
     		$('#join_PW').focus();
     		event.preventDefault();
     	}else if(checkPW == "" || checkPW == null){
-    		alert("ºñ¹Ğ¹øÈ£È®ÀÎÀ» ²À ÀÔ·ÂÇØÁÖ¼¼¿ä");
+    		alert("ë¹„ë°€ë²ˆí˜¸í™•ì¸ì„ ê¼­ ì…ë ¥í•´ì£¼ì„¸ìš”");
     		$('#join_CheckPW').focus();
     		event.preventDefault();
     	}else if(pw != checkPW){
-    		alert("ºñ¹Ğ¹øÈ£¿Í ºñ¹Ğ¹øÈ£È®ÀÎÀÌ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù.");
+    		alert("ë¹„ë°€ë²ˆí˜¸ì™€ ë¹„ë°€ë²ˆí˜¸í™•ì¸ì´ ì¼ì¹˜í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
     		$('#join_CheckPW').focus();
     		event.preventDefault();	
     	}else if(name == "" || name == null){
-    		alert("ÀÌ¸§À» ²À ÀÔ·ÂÇØÁÖ¼¼¿ä");
+    		alert("ì´ë¦„ì„ ê¼­ ì…ë ¥í•´ì£¼ì„¸ìš”");
     		$('#join_Name').focus();
+    		event.preventDefault();
+    	}else if(DuplicationTest != 'yes'){
+    		alert('ì´ë©”ì¼ ì¤‘ë³µê²€ì‚¬ë¥¼ ê¼­ í•´ì£¼ì„¸ìš”');
     		event.preventDefault();
     	}
     	
     	return true;
     }
-   
-   <%
-     if(!joinAlertStr.equals("") || joinAlertStr != null){
-   %>
-     alert("<%=joinAlertStr%>");
-   <%
-     }
-   %>
-   
+    
+    $('#isDup').click(function (e) {
+    	var join_email = $('#join_Email').val();
+    	//ì´ë©”ì¼ ì •ê·œì‹
+    	var emaliRegExp = /^[0-9a-zA-Z][0-9a-zA-Z\_\-\.\+]+[0-9a-zA-Z]@[0-9a-zA-Z][0-9a-zA-Z\_\-]*[0-9a-zA-Z](\.[a-zA-Z]{2,6}){1,2}$/i;
+    	
+    	if(join_email.match(emaliRegExp) == null){
+     		alert("ì´ë©”ì¼ í˜•ì‹ì„ ë§ì¶°ì£¼ì„¸ìš”");
+     		$('#join_Email').val('');
+     		$('#join_Email').focus();
+     		event.preventDefault();
+     	}else{
+     		isDuplication(join_email);        
+     	}
+    });    
+    
+    function isDuplication(join_email){
+    	$.ajax({
+            type:"post",
+            url:'<%=request.getContextPath()%>/home/isDuplicated.do',
+            data:{
+         	   join_email : join_email
+            },
+            success:function(data){
+ 			  if(data == 'doNotHave'){
+ 				  var cResult = confirm('ì‚¬ìš©í•  ìˆ˜ ìˆëŠ” ì´ë©”ì¼ì…ë‹ˆë‹¤. ì‚¬ìš©í•˜ì‹œê² ìŠµë‹ˆê¹Œ?');
+ 				  
+ 				  if(cResult){
+ 					  $('#DuplicationTest').val('yes');
+ 					  $('#join_Email').attr("readonly", true);
+ 				  }else{
+ 					  alert('ìƒˆë¡œìš´ ì´ë©”ì¼ ì…ë ¥í•´ì£¼ì„¸ìš”.');
+ 					  $('#join_Email').val('');
+ 					  $('#join_Email').focus();
+ 				  }
+ 			  }else if(data == 'have'){
+ 				  alert('ì¤‘ë³µëœ ì´ë©”ì¼ì´ ìˆìŠµë‹ˆë‹¤. ë‹¤ë¥¸ ì´ë©”ì¼ ì…ë ¥í•´ì£¼ì„¸ìš”.');
+ 				  $('#join_Email').val('');
+ 				  $('#join_Email').focus();
+ 			  }
+            }
+
+         })
+    }
+    
+    function checkloginForm(){
+    	var login_Email = $('#login_Email').val();
+    	var pw = $('#login_PW').val();
+    	//ì´ë©”ì¼ ì •ê·œì‹
+    	var emaliRegExp = /^[0-9a-zA-Z][0-9a-zA-Z\_\-\.\+]+[0-9a-zA-Z]@[0-9a-zA-Z][0-9a-zA-Z\_\-]*[0-9a-zA-Z](\.[a-zA-Z]{2,6}){1,2}$/i;
+    	//ë¹„ë°€ë²ˆí˜¸ ì •ê·œì‹ : #?!@$%^&*- ë§Œ í—ˆìš©
+    	var pwRegExp = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+    	
+    	if(login_Email.match(emaliRegExp) == null){
+     		alert("ì´ë©”ì¼ í˜•ì‹ì„ ë§ì¶°ì£¼ì„¸ìš”");
+     		$('#login_Email').val('');
+     		$('#login_Email').focus();
+     		event.preventDefault();
+     	}else if((pw.length < 8) && (pw.length > 20)){
+    		alert("ë¹„ë°€ë²ˆí˜¸ëŠ” 8ìë¦¬ ì´ìƒ 20 ìë¦¬ ì´í•˜ë§Œ ê°€ëŠ¥í•©ë‹ˆë‹¤.");
+    		$('#login_PW').focus();
+    		event.preventDefault();
+    	}else if(!pw.match(pwRegExp)){
+    		alert("ë¹„ë°€ë²ˆí˜¸ëŠ” ì˜ë¬¸(ëŒ€ì†Œë¬¸ì ê°ê° 1ê°œ í•„ìˆ˜),ìˆ«ì,íŠ¹ìˆ˜ë¬¸ì(#?!@$%^&*- ë§Œ í—ˆìš©)ë¥¼ í˜¼ìš©í•˜ì—¬ ì…ë ¥í•´ì£¼ì„¸ìš”");
+    		$('#login_PW').focus();
+    		event.preventDefault();
+    	}
+    }
+
+
   </script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </body>
 </html>
