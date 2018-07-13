@@ -2,9 +2,9 @@ package golmok.team.service.impl;
 
 import org.springframework.stereotype.Service;
 
-import golmok.team.service.HomeService;
+import golmok.team.service.BoardService;
 
-@Service
-public class BoardServiceImpl implements HomeService {
+@Service("homeService")
+public class BoardServiceImpl implements BoardService {
 
 }
