@@ -219,7 +219,7 @@ function ThirdTypeLoad(){
         }
         
  
-		//실행
+		//검색착에 실행할 경우
         function initGeocoder() {
             var point;
             $('#address').on('keydown', function(e) {
