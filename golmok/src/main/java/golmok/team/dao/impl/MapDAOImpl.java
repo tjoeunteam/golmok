@@ -18,4 +18,19 @@ public class MapDAOImpl {
 	
 		return sqlSession.selectList("map.select_1type");
 	}
+	
+	public List<MapVO> select_2type (MapVO vo) {
+		
+		return sqlSession.selectList("map.select_2type",vo);
+	}
+	
+	public List<MapVO> select_3type (MapVO vo) {
+		
+		return sqlSession.selectList("map.select_3type",vo);
+	}
+	
+	public List<MapVO> select_recomend (MapVO vo) {
+		
+		return sqlSession.selectList("recomend.get_recomend",vo);
+	}
 }

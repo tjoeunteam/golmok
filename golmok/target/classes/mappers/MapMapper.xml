@@ -8,6 +8,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="select_1type" resultType="golmok.team.vo.MapVO">
 	SELECT * FROM STORE_1TYPE_TABLE
-</select>
+	</select>
+	
+	<select id="select_2type" resultType="golmok.team.vo.MapVO">
+	SELECT * FROM STORE_2TYPE_TABLE WHERE STORE_2TYPE_CODE LIKE CONCAT(#{STORE_1TYPE_CODE},'%')
+	</select>
+	
+	<select id="select_3type" resultType="golmok.team.vo.MapVO">
+	SELECT * FROM STORE_TYPE_TABLE WHERE STORE_TYPE_CODE LIKE CONCAT(#{STORE_2TYPE_CODE},'%')
+	</select>
+	
+	
    
 </mapper>
