@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 다른 mapper와 중복되지 않도록 네임스페이스 기재 -->
+<mapper namespace="recomend">
+   	<select id="get_recomend" resultType="golmok.team.vo.MapVO">
+	select sale_code,SALE_NAME, SALE_SEVICE_NAME, SALE_SERVICE_CODE, ROUND(MONTH_SALES/SALE_STORE_COUNT/1000000,0) as earn,
+
+	MONTH_SALES/SALE_STORE_COUNT/1000000 + (flow_peo_num/1000) - (SD_CLOSE_PERCENTAGE * SD_SIMILAR_STORE)
+	
+	as score
+	, SALE_STORE_COUNT from golmok_sales_table ,golmok_flow_table , golmok_sd_table where SALE_SERVICE_CODE = (SELECT GOLMOK_TYPE_CODE from type_refer_table where store_type_code = #{STORE_TYPE_CODE}) and `﻿SALE_DATE` = 201803 and `﻿FLOW_DATE` = 201803 
+	and FLOW_NUM = sale_code 
+	and `﻿SD_DATE` = 201803 and SD_CODE = SALE_CODE and SD_SERVICE_CODE = (SELECT GOLMOK_TYPE_CODE from type_refer_table where store_type_code = #{STORE_TYPE_CODE})
+	order by score desc limit 5
+	</select>
+   
+</mapper>
