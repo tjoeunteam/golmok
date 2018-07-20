@@ -2,7 +2,7 @@ package golmok.team.vo;
 
 import java.sql.Date;
 
-public class UserVo {
+public class UserVo extends PagingVO{
 	
 	private String user_email;
 	private String user_pw;
