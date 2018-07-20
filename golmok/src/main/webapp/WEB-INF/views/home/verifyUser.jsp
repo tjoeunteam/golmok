@@ -8,51 +8,71 @@
 <style type="text/css">
   #golmokImg{
      opacity: 0.2;
-     padding-top: 4%;
      padding-left: 10%;
   }
   
   .img .inContent{
      position:absolute;
      top:20%; /* in conjunction with left property, decides the text position */
-     left:10%;
+     left:35%;
      text-align:center;
-     width:300px;
+     width:500px;
+     height:400px;
+     background-color: #F7F7F7;
+     color:#0E2F44;
    }
    
-   #verifyLabel{
-     font-size: 2em;
+   span#header{
+     font-size: 5em;
+     opacity: 0.8;
    }
    
-   #headingVerify{
-     font-size :5em;
+   .divForContent{
+     padding-left:10%;
+     text-align:left;
    }
    
-   input#verify_Info[type="text"]{
-     height:30px;
-     width : 200px;
+   span#content{
+     font-size: 3em;
+     opacity: 0.8;
+     
+   }
+   
+   .img .inContent input[type="text"]{
+     height: 40px;
+     width:400px;
+     font-size:1.6em;
+   }
+   
+   #verifyFormButton{
+     padding-top:8%;
+     padding-left:65%;
    }
 </style>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/home/menu.jsp"></jsp:include>
 <div class="img">
-  <img src="<%=request.getContextPath() %>/resources/img/golmokDaejang.jpg"  id="golmokImg"/>
-  <div class="inContent">    
-    <div class="container">
-      <form class="form-signin">
-        <h2 class="form-signin-heading" id="headingVerify"><strong>본인 확인</strong></h2><br><br><br>
-          <div class="form-group">
-            <label for="recipient-name" class="control-label" id="verifyLabel">이메일</label>
-            <input type="text" class="form-control" id="verify_Info" name="login_Email" id="login_Email">
-          </div>
-          <div class="form-group">
-            <label for="message-text" class="control-label" id="verifyLabel">성함</label>
-            <input type="text" class="form-control" id="verify_Info" name="login_PW" id="login_PW">
-          </div>
-      </form>
-
+  <img src="<%=request.getContextPath()%>/resources/img/golmokDaejang.jpg" id="golmokImg">
+  <div class="inContent">
+    <div>
+      <span id="header"><strong>비밀번호 찾기</strong></span>
     </div>
+    <form action="<%=request.getContextPath() %>/home/findPWAction.do" name="findPW" method="POST">
+      <div class="divForContent">
+        <span id="content">이메일</span>
+        <div>
+          <input type="text" id="verifyEmail" name="verifyEmail">
+        </div>
+        <span id="content">이름</span>
+        <div>
+          <input type="text" id="verifyName" name="verifyName">
+        </div>
+        <div id="verifyFormButton">
+          <input type="submit" class="btn btn-info btn-lg" id="findPWButton" name="findPWButton" value="비밀번호 찾기">
+        </div>
+      </div>
+    </form>
   </div>
 </div>
 </body>

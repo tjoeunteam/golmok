@@ -9,7 +9,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <result property="user_pw"  column="USER_PW" />
     <result property="user_name"  column="USER_NAME" />
     <result property="user_verifyCode" column="USER_VERIFYCODE" />
-    <result property="user_joinDate"  column="USER_ISUSER" />    
+    <result property="user_joinDate"  column="USER_JOINDATE" />
+    <result property="user_isUser" column="USER_ISUSER"/>
   </resultMap>
 
   <insert id="joinUser">
@@ -28,5 +29,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   <select id="selectByEmailAndPW" parameterType="golmok.team.vo.UserVo" resultType="golmok.team.vo.UserVo">
     SELECT * FROM USER_TABLE WHERE USER_EMAIL = #{user_email} AND USER_PW = MD5(#{user_pw})
   </select>
+  
+  <select id="verifyUser" parameterType="golmok.team.vo.UserVo" resultType="golmok.team.vo.UserVo">
+    SELECT * FROM USER_TABLE WHERE USER_EMAIL = #{user_email} AND USER_NAME = #{user_name}
+  </select>
+  
+  <update id="updateVerifyCode">
+    UPDATE USER_TABLE SET USER_VERIFYCODE = MD5(#{user_verifyCode}) WHERE USER_EMAIL = #{user_email};
+  </update>
+  
+  <update id="modifyPWAndVerifyCode">
+    UPDATE USER_TABLE SET USER_VERIFYCODE = '', USER_PW = MD5(#{user_pw}) WHERE USER_EMAIL = #{user_email} AND USER_VERIFYCODE = #{user_verifyCode}
+  </update>
    
+  <update id="modifyPW">
+    UPDATE USER_TABLE SET USER_PW = MD5(#{user_pw}) WHERE USER_EMAIL = #{user_email}
+  </update>
+  
+  <select id="selectAllUserInfo" resultMap="user">
+    SELECT T.* FROM (SELECT @ROWNUM := @ROWNUM + 1 AS ROWNUM, U.* FROM USER_TABLE U, (SELECT @ROWNUM := 0) R ORDER BY USER_JOINDATE ASC ) T 
+    WHERE T.ROWNUM BETWEEN #{startNum} AND #{endNum}
+  </select>
+   
+  <select id="selectInfoCount" resultType="int">
+  	SELECT COUNT(*) FROM USER_TABLE
+  </select> 
+  
+  <delete id="deleteUserInfo">
+    DELETE FROM USER_TABLE WHERE USER_EMAIL = #{user_email};
+  </delete>
 </mapper> 
