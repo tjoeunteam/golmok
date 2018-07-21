@@ -459,7 +459,8 @@ public class HomeController {
 		}
 		
 		model.addAttribute("deleteUserInfoResult", deleteUserInfoResult);		
-		return "/home/homepage";
+		return
+				"/home/homepage";
 	}
 	
 	@RequestMapping(value="/home/modifyUserInfo.do", method=RequestMethod.POST)
