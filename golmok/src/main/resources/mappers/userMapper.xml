@@ -58,4 +58,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   <delete id="deleteUserInfo">
     DELETE FROM USER_TABLE WHERE USER_EMAIL = #{user_email};
   </delete>
+  
+  <update id="modifyUserInfoWithoutEmail">
+  	UPDATE USER_TABLE SET USER_PW = MD5(#{user_pw}), USER_NAME = #{user_name} WHERE USER_EMAIL = #{user_email}  	
+  </update>
 </mapper> 

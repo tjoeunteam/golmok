@@ -6,7 +6,7 @@
 <%
   List<UserVo> userInfoList = (List<UserVo>)request.getAttribute("userInfoList");
   int count = (int)request.getAttribute("count");
-  int pageNum = (int)request.getAttribute("pageNum");		
+  int pageNum = (int)request.getAttribute("pageNum");	
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -290,7 +290,6 @@ a.pageNum#isPageNum:hover{
 					<div class="modal-body">
 						<div class="form-group">
 							<label for="recipient-name" class="control-label">이메일</label>&nbsp;&nbsp;
-							<span><input type="button" class="btn btn-warning btn-sm" id="isDup" value="이메일 중복검사"></span>
 							<input type="text" class="form-control join_inputs" name="userInfo_Email" id="userInfo_Email" value="">
 						</div>
 						<div class="form-group">
@@ -308,10 +307,9 @@ a.pageNum#isPageNum:hover{
 						</div>
 					</div>
 					<div class="modal-footer">
-					    <input type="hidden" id="originEmail" name="originEmail" value="">
 					    <input type="hidden" id="pageNum" name="pageNum" value="">
 						<input type="submit" id="modifyMyInfoForm_submit" class="btn btn-info" value="회원정보 변경"> 
-						<input type="button" id="delete_myInfoForm" class="btn btn-danger" value="회원강제탈퇴">
+						<button id="delete_userInfo" class="btn btn-danger">회원강제탈퇴</button>
 					</div>
 				</form>
 			</div>
@@ -324,10 +322,25 @@ a.pageNum#isPageNum:hover{
 		modifyMyInfoForm()
 	});
 	
+	$('#delete_userInfo').on('click', function(){
+		delete_userInfoValidation()
+	}); 
+	
+
+    
+    function modifyUserInfo(originEmail, name , pageNum){
+    	var email = originEmail;
+    	$('#userInfo_Email').val(email);
+    	$('#userInfo_Name').val(name);
+    	$('#pageNum').val(pageNum);
+		$('#userInfo_Email').attr("readonly", true);
+    	$('#modifyUserInfoMdoal').modal('show')   
+    }
+    
 	 function modifyMyInfoForm(){
 	    	
 	    	var PW = $('#userInfo_PW').val();
-	    	var checkPW = $('#userInfo_CheckPW').val();    	
+	    	var checkPW = $('#userInfo_CheckPW').val();  
 	        //비밀번호 정규식
 	  	    var pwRegExp = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
 	  	    
@@ -354,32 +367,42 @@ a.pageNum#isPageNum:hover{
 	    	
 	    	return true;
 	    }
-	    
-	    function confirmDelete(){
-	    	var email = $('#userInfo_Email').val();
-	    	var name = $('#userInfo_Name').val();
-	    	var address = "<%=request.getContextPath()%>/home/deleteInfo?email=";
+    
+	
+    
+    function delete_userInfoValidation(){
+		var email = $('#userInfo_Email').val();
+		var name = $('#userInfo_Name').val();
+		var pageNum = <%=pageNum%>;
+		
+		if(email == 'tjoeunteam@gmail.com'){
+			alert('관리자는 강제 탈퇴가 불가능합니다.');
+			event.preventDefault();
+		}else{
+			var address1 = "<%=request.getContextPath()%>/home/deleteInfo?email=";
+	    	var address2 = "&pageNum=";
+	    	var target = address1 + email + address2 + pageNum;   
 	    	
-	    	var target = address + email;
+			event.preventDefault();		
+
+	    	var result = confirm(name + '(' + email + ')님을 강제탈퇴시키시겠습니까?');
 	    	
-	    	var result = confirm(name+'('+email+')님 탈퇴하시겠습니까?');
-	  
 	    	if(result){
 	    		location.href=target;
-	    	}else{
-	    		event.preventDefault();
-	    	}
-	    }
+	    	}			
+		}
+	
+    	
+    } 
+    
+	
+	
 	    
     function removeUserInfo(email, name, pageNum){
-    	alert(pageNum);
     	
     	var address1 = "<%=request.getContextPath()%>/home/deleteInfo?email=";
     	var address2 = "&pageNum=";
-    	var target = address1 + email + address2 + pageNum;
-    	
-    	alert(target);
-    	
+    	var target = address1 + email + address2 + pageNum;   	
 
     	var result = confirm(name + '(' + email + ')님을 강제탈퇴시키시겠습니까?');
     	
@@ -388,17 +411,6 @@ a.pageNum#isPageNum:hover{
     	}
     }
     
-    function modifyUserInfo(originEmail, name, pageNum){
-    	$('#userInfo_Email').val(originEmail);
-    	$('#userInfo_Name').val(name);
-    	$('#originEmail').val(originEmail);
-    	$('#pageNum').val(pageNum);
-    	if(originEmail == 'tjoeunteam@gmail.com'){
-    		$('#userInfo_Email').attr("readonly", true);
-    		$('#userInfo_Name').attr("readonly", true);
-    	}
-    	$('#modifyUserInfoMdoal').modal('show')   
-    }
     
     var deleteUserInfoResult = '<c:out value="${deleteUserInfoResult}"/>';
     
@@ -406,48 +418,15 @@ a.pageNum#isPageNum:hover{
   	  alert('회원탈퇴에 실패했습니다.');
     }else if(deleteUserInfoResult == 'successDeleteUserInfo'){
   	  alert('회원탈퇴에 성공하였습니다.');E
-    }
-    
-    $('#isDup').click(
-			function(e) {
-				var join_email = $('#join_Email').val();
-				//이메일 정규식
-				var emaliRegExp = /^[0-9a-zA-Z][0-9a-zA-Z\_\-\.\+]+[0-9a-zA-Z]@[0-9a-zA-Z][0-9a-zA-Z\_\-]*[0-9a-zA-Z](\.[a-zA-Z]{2,6}){1,2}$/i;
-
-				if (join_email.match(emaliRegExp) == null) {
-					alert("이메일 형식을 맞춰주세요");
-					$('#userInfo_Email').val('');
-					$('#userInfo_Email').focus();
-					event.preventDefault();
-				} else {
-					isDuplication(join_email);
-				}
-	});
-    function isDuplication(join_email) {
-    $.ajax({
-			type : "post",
-			url : '<%=request.getContextPath()%>/home/isDuplicated.do',
-            data:{
-                join_email : join_email
-            },
-            success:function(data){
-              if(data == 'doNotHave'){
-	            var cResult = confirm('사용할 수 있는 이메일입니다. 사용하시겠습니까?');
-	            if(cResult){
-		          $('#DuplicationTest').val('yes');
-		          $('#userInfo_Email').attr("readonly", true);
-	            }else{
-		          alert('새로운 이메일 입력해주세요.');
-		          $('#userInfo_Email').val('');
-		          $('#userInfo_Email').focus();
-	          }
-              }else if(data == 'have'){
-	            alert('중복된 이메일이 있습니다. 다른 이메일 입력해주세요.');
-	            $('#userInfo_Email').val('');
-	            $('#userInfo_Email').focus();
-              }
-             }
-   })};
+    }    
+   
+   var modifyUserInfoResult = '<c:out value="${modifyUserInfoResult}"/>';   
+     
+   if(modifyUserInfoResult == 'success'){    	
+	   alert('회원변경 성공!');     
+   }else if(modifyUserInfoResult == 'fail'){    	
+	   alert('회원변경 실패');    
+   }
   </script>
 </body>
 </html>
