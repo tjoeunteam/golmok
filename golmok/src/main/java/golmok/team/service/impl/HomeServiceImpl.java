@@ -86,4 +86,10 @@ public class HomeServiceImpl implements HomeService {
 		return resultNum;
 	}
 
+	@Override
+	public int modifyUserInfoWithoutEmail(UserVo uVo) {
+		int resultNum = homeDao.modifyUserInfoWithoutEmail(uVo);
+		return resultNum;
+	}
+
 }

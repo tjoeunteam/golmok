@@ -28,4 +28,6 @@ public interface HomeDAO {
 
 	int deleteUserInfo(UserVo uVo);
 
+	int modifyUserInfoWithoutEmail(UserVo uVo);
+
 }

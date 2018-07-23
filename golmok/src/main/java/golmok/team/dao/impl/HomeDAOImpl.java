@@ -71,4 +71,9 @@ public class HomeDAOImpl implements HomeDAO {
 		return sqlSession.delete("user.deleteUserInfo", uVo);
 	}
 
+	@Override
+	public int modifyUserInfoWithoutEmail(UserVo uVo) {
+		return sqlSession.update("user.modifyUserInfoWithoutEmail", uVo);
+	}
+
 }

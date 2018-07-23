@@ -361,7 +361,7 @@ body{
 							type : "post",
 							url : '<%=request.getContextPath()%>/home/isDuplicated.do',
             data:{
-         	   join_email : join_email
+         	   email : join_email
             },
             success:function(data){
  			  if(data == 'doNotHave'){

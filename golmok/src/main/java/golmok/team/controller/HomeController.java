@@ -142,7 +142,7 @@ public class HomeController {
 	public String idDuplicated(HttpServletRequest request) {
 		String str = "";
 		
-		String join_Eamil = request.getParameter("join_email");
+		String join_Eamil = request.getParameter("email");
 		
 		UserVo uVo = new UserVo();
 		uVo.setUser_email(join_Eamil);
@@ -408,7 +408,8 @@ public class HomeController {
 	public String userINfo(HttpServletRequest request, Model model) {
 		
 		int pageNum = (request.getParameter("pageNum") != null) ? Integer.parseInt(request.getParameter("pageNum")) : 1;
-		System.out.println("pageNum :" + pageNum);
+		
+		String modifyUserInfoResult = (request.getParameter("modifyUserInfoResult") != null) ? request.getParameter("modifyUserInfoResult") : "none";
 		
 		int startNum = (pageNum -1 ) * 10 + 1;
 		int endNum = startNum + 9 ;
@@ -424,6 +425,7 @@ public class HomeController {
 		model.addAttribute("userInfoList", resultVo);
 		model.addAttribute("pageNum", pageNum);
 		model.addAttribute("count", count);
+		model.addAttribute("modifyUserInfoResult", modifyUserInfoResult);
 		
 		return "/home/userInfo";
 	}
@@ -469,8 +471,26 @@ public class HomeController {
 		String email = request.getParameter("userInfo_Email");
 		String pw = request.getParameter("userInfo_PW");
 		String name= request.getParameter("userInfo_Name");
-		String originEmail = request.getParameter("originEmail");
 		
-		return "redirect:userInfo.do?pageNum" + pageNum;
+		UserVo uVo = new UserVo();
+		uVo.setUser_email(email);
+		uVo.setUser_pw(pw);
+		uVo.setUser_name(name);
+		
+		int result = 0;
+		
+		result = homeService.modifyUserInfoWithoutEmail(uVo);
+		
+		String modifyUserInfoResult = "";
+		
+		if(result == 0) {
+			modifyUserInfoResult = "fail";
+		}else {
+			modifyUserInfoResult = "success";
+		}
+		
+		
+		
+		return "redirect:userInfo.do?pageNum=" + pageNum + "&modifyUserInfoResult=" + modifyUserInfoResult;
 	}
 }

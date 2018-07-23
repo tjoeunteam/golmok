@@ -28,4 +28,6 @@ public interface HomeService {
 
 	int deleteUserInfo(UserVo uVo);
 
+	int modifyUserInfoWithoutEmail(UserVo uVo);
+
 }
