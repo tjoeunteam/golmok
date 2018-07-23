@@ -385,7 +385,7 @@ a.pageNum#isPageNum:hover{
 	    	
 			event.preventDefault();		
 
-	    	var result = confirm(name + '(' + email + ')님을 강제탈퇴시키시겠습니까?');
+	    	var result = confirm(name + '(' + email + ')님을 강제탈퇴시키시겠습니까?d');
 	    	
 	    	if(result){
 	    		location.href=target;
